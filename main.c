@@ -139,6 +139,8 @@ int main() {
                 printf("\n");
                 printf("a) Confirm order \n");
                 printf("b) Go back \n");
+                int c;
+                while((c= getchar()) != '\n' && c != EOF);
                 choice = getchar();
                 getchar();
                 if (choice == 'a') {
