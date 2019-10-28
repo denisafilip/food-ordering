@@ -14,7 +14,7 @@ int main() {
     char drinks[][30] = { "Coca-Cola", "Fanta", "Lipton", "Water", "No, thanks!"};
     int drinksPrices[] = {5, 5, 5, 4};
     int noOfDishes[] = {3, 2, 4};
-    int prices[3][3] = {
+    int prices[3][4] = {
             {21, 23, 19},
             {23, 21},
             {23, 22, 19, 21}
@@ -85,7 +85,6 @@ int main() {
                 getchar();
                 if (choice == 'a' + noOfDrinks) {
                     state--;
-                    getchar();
                     break;
                 }
                 drinkChoice = choice - 'a';
@@ -113,14 +112,8 @@ int main() {
 
             case 5: {
                 printf("Any additional info? \n");
-                scanf("%s", additionalInfo);
-                /*printf("a) Go back \n");
-                choice = getchar();
-                getchar();
-                if (choice == 'a') {
-                    state--;
-                    break;
-                }*/
+                gets(additionalInfo);
+                //scanf("%s", additionalInfo);
                 state++;
                 break;
 
@@ -132,17 +125,22 @@ int main() {
                 printf("Name: %s \n", username);
                 printf("Food items: \n");
                 printf("--- %s: %d \n", food[foodTypeChoice][specificFoodChoice], prices[foodTypeChoice][specificFoodChoice]);
-                printf("--- %s: %d \n", drinks[drinkChoice], drinksPrices[drinkChoice]);
+                if (drinkChoice + 'a' == 'e') {
+                    printf("--- Drinks: %s \n", drinks[drinkChoice]);
+                }
+                else {
+                    printf("--- Drinks: %s: %d \n", drinks[drinkChoice], drinksPrices[drinkChoice]);
+                }
                 printf("Cutlery: %s \n", cutleryAnswer[cutleryChoice]);
                 printf("Additional info: %s \n", additionalInfo);
                 printf("Payment amount: %d \n", prices[foodTypeChoice][specificFoodChoice] + drinksPrices[drinkChoice]);
                 printf("\n");
                 printf("a) Confirm order \n");
                 printf("b) Go back \n");
-                int c;
-                while((c= getchar()) != '\n' && c != EOF);
+               /* int c;
+                while((c= getchar()) != '\n' && c != EOF);*/
                 choice = getchar();
-                getchar();
+               // getchar();
                 if (choice == 'a') {
                     orderConfirmed = 1;
                     printf("Order confirmed! Thank you for buying from us, %s! \n", username);
