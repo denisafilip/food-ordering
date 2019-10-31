@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 int main() {
     printf("Welcome to Food Thingies! \n");
@@ -113,7 +114,6 @@ int main() {
             case 5: {
                 printf("Any additional info? \n");
                 gets(additionalInfo);
-                //scanf("%s", additionalInfo);
                 state++;
                 break;
 
@@ -132,15 +132,13 @@ int main() {
                     printf("--- Drinks: %s: %d \n", drinks[drinkChoice], drinksPrices[drinkChoice]);
                 }
                 printf("Cutlery: %s \n", cutleryAnswer[cutleryChoice]);
-                printf("Additional info: %s \n", additionalInfo);
+                if (strcmp(additionalInfo, "")!=0)
+                     printf("Additional info: %s \n", additionalInfo);
                 printf("Payment amount: %d \n", prices[foodTypeChoice][specificFoodChoice] + drinksPrices[drinkChoice]);
                 printf("\n");
                 printf("a) Confirm order \n");
                 printf("b) Go back \n");
-               /* int c;
-                while((c= getchar()) != '\n' && c != EOF);*/
                 choice = getchar();
-               // getchar();
                 if (choice == 'a') {
                     orderConfirmed = 1;
                     printf("Order confirmed! Thank you for buying from us, %s! \n", username);
