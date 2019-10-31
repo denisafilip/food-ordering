@@ -132,6 +132,7 @@ int main() {
                     printf("--- Drinks: %s: %d \n", drinks[drinkChoice], drinksPrices[drinkChoice]);
                 }
                 printf("Cutlery: %s \n", cutleryAnswer[cutleryChoice]);
+                // not displaying additional info is the user hits enter
                 if (strcmp(additionalInfo, "")!=0)
                      printf("Additional info: %s \n", additionalInfo);
                 printf("Payment amount: %d \n", prices[foodTypeChoice][specificFoodChoice] + drinksPrices[drinkChoice]);
