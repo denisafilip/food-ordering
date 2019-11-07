@@ -27,7 +27,7 @@ int getFinalOrderChoiceIndex(int *state, char username[]) {
         printf("Order confirmed! Thank you for buying from us, %s! \n", username);
     }
     else {
-        (*state)=-2;
+        (*state)-=2;
     }
     getchar();
     return orderConfirmed;

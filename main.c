@@ -13,7 +13,9 @@ void getAdditionalInfo(char additionalInfo[], int *state);
 int main() {
     printf("Welcome to Food Thingies! \n");
     char username[20], password[20];
-    int noOfFoodTypes = 3, foodTypeChoice, specificFoodChoice, drinkChoice, noOfDrinks = 5, drinksPrices[] = {5, 5, 5, 4}, noOfDishes[] = {3, 2, 4}, cutlery = 2, cutleryChoice, state=0, orderConfirmed = 0;
+    int noOfFoodTypes = 3, foodTypeChoice, specificFoodChoice, drinkChoice, noOfDrinks = 5, drinksPrices[] = {5, 5, 5, 4}, noOfDishes[] = {3, 2, 4}, cutlery = 2, cutleryChoice;
+    int state = 0;
+    int orderConfirmed = 0;
     char foodTypes[][30] = {"Pizza", "Pasta", "Salad"};
     char food[3][4][MAX_SPECIFIC_FOOD_NAME] = {
             {"Pizza Carbonara", "Pizza Diavola", "Pizza Margherita"},
@@ -35,21 +37,23 @@ int main() {
             }
             case 1: {
                 displayFoodOptions(noOfFoodTypes, foodTypes);
-                foodTypeChoice = getChoiceIndex(foodTypes, &state);
+                foodTypeChoice = getChoiceIndex(noOfFoodTypes, &state);
                 break;
             }
             case 2: {
                 displaySpecificFoodOptions(noOfDishes[foodTypeChoice], foodTypes[foodTypeChoice], food[foodTypeChoice], prices[foodTypeChoice]);
-                specificFoodChoice = getChoiceIndex(food[foodTypeChoice], &state);
+                specificFoodChoice = getChoiceIndex(noOfDishes[foodTypeChoice], &state);
                 break;
             }
             case 3: {
                 displayDrinksOptions(noOfDrinks, foodTypes[foodTypeChoice], drinks, drinksPrices);
-                drinkChoice = getChoiceIndex(drinks, &state);
+                drinkChoice = getChoiceIndex(noOfDrinks, &state);
+                break;
             }
             case 4: {
                 displayCutleryOptions(cutlery, cutleryAnswer);
-                cutleryChoice = getChoiceIndex(cutleryAnswer, &state);
+                cutleryChoice = getChoiceIndex(cutlery, &state);
+                break;
             }
             case 5: {
                 getAdditionalInfo(additionalInfo, &state);
