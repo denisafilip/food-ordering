@@ -9,4 +9,4 @@
 
 void inputAccountData (char username[], char password[]);
 void displayAccountData(char username[]);
-void displayCustomerOrder(char food[], int prices, char drinks[], int drinksPrices, char cutleryAnswer[], char additionalInfo[]);
+void displayCustomerOrder(char * specificFoods, double prices, char * drinks, double drinksPrices, char cutleryAnswer[], char additionalInfo[], int drinkChoice);

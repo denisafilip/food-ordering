@@ -22,19 +22,21 @@ void displayAccountData(char username[]) {
     printf("Name: %s \n", username);
 }
 
-void displayCustomerOrder(char food[], int prices, char drinks[], int drinksPrices, char cutleryAnswer[], char additionalInfo[]) {
-    int drinkChoice;
+void displayCustomerOrder(char * specificFoods, double prices, char * drinks, double drinksPrices, char cutleryAnswer[], char additionalInfo[], int drinkChoice) {
     printf("Food items: \n");
-    printf("--- %s: %d \n", food, prices);
+    printf("--- %s: %.2lf \n", specificFoods, prices);
     if (drinkChoice + 'a' == 'e') {
-        printf("--- Drinks: %s \n", drinks);
-    }
-    else {
-        printf("--- Drinks: %s: %d \n", drinks, drinksPrices);
+        printf("--- Drinks: %s \n", "No, thanks!");
+    } else {
+        printf("--- Drinks: %s: %.2lf \n", drinks, drinksPrices);
     }
     printf("Cutlery: %s \n", cutleryAnswer);
     if (strcmp(additionalInfo, "")!=0)
         printf("Additional info: %s \n", additionalInfo);
-    printf("Payment amount: %d \n", prices + drinksPrices);
+    if (drinkChoice + 'a' == 'e') {
+        printf("Payment amount: %.2lf \n", prices);
+    } else {
+        printf("Payment amount: %.2lf \n", prices + drinksPrices);
+    }
     printf("\n");
 }

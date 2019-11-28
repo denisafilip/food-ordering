@@ -18,7 +18,7 @@ int getChoiceIndex(int noOfChoices, int *state) {
 }
 
 int getFinalOrderChoiceIndex(int *state, char username[]) {
-    int orderConfirmed;
+    int orderConfirmed = 0;
     printf("a) Confirm order \n");
     printf("b) Go back \n");
     char choice = getchar();

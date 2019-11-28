@@ -1,33 +1,52 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "loadData.h"
 #include "display.h"
 #include "choice.h"
 #include "accountData.h"
+#include "freeMemory.h"
 
-#define MAX_FOOD_TYPE_NAME 30
-#define MAX_SPECIFIC_FOOD_NAME 20
-#define MAX_DRINK_NAME 30
-#define MAX_CUTLERY_NAME 30
-
-void getAdditionalInfo(char additionalInfo[], int *state);
+#define LOAD_DATA "Please load the data:"
 
 int main() {
-    printf("Welcome to Food Thingies! \n");
+    FILE *data = fopen("data.txt", "r");
+    if(data == NULL){
+        printf(LOAD_DATA "\n");
+        data = stdin;
+    }
     char username[20], password[20];
-    int noOfFoodTypes = 3, foodTypeChoice, specificFoodChoice, drinkChoice, noOfDrinks = 5, drinksPrices[] = {5, 5, 5, 4}, noOfDishes[] = {3, 2, 4}, cutlery = 2, cutleryChoice;
+    int noOfFoodTypes, foodTypeChoice, specificFoodChoice, drinkChoice, noOfDrinks;
+    int cutlery = 2, cutleryChoice;
     int state = 0;
     int orderConfirmed = 0;
-    char foodTypes[][30] = {"Pizza", "Pasta", "Salad"};
-    char food[3][4][MAX_SPECIFIC_FOOD_NAME] = {
-            {"Pizza Carbonara", "Pizza Diavola", "Pizza Margherita"},
-            {"Chicken Alfredo", "Mac & Cheese"},
-            {"Tuna Salad", "Chicken Salad", "Greek Salad", "Cobb"}
-    };
-    int prices[3][4] = {
-            {21, 23, 19},
-            {23, 21},
-            {23, 22, 19, 21}
-    };
-    char cutleryAnswer[][MAX_CUTLERY_NAME] = {"Yes!", "No, thanks!"}, additionalInfo[50], drinks[][MAX_DRINK_NAME] = { "Coca-Cola", "Fanta", "Lipton", "Water", "No, thanks!"};
+    char cutleryAnswer[][MAX_CUTLERY_NAME] = {"Yes!", "No, thanks!"}, additionalInfo[MAX_ADDITIONAL_INFO];
+    char line[MAX_LINE];
+    char charPrice[MAX_LINE];
+    char *charNumber;
+    //foods
+    noOfFoodTypes = getNumberOf(charNumber, line, data);
+    int * noOfSpecificFoods = (int*)malloc(noOfFoodTypes * sizeof(int));
+    char ** foodTypes = (char**)malloc(noOfFoodTypes * sizeof(char*));
+    char *** specificFoods = (char***)malloc(noOfFoodTypes * sizeof(char**));
+    double ** prices = (double**)malloc(noOfFoodTypes * sizeof(double*));
+    for (int i=0; i<noOfFoodTypes; i++) {
+        fgets(line, MAX_LINE, data);
+        noOfSpecificFoods[i] = countSpecificFoods(noOfSpecificFoods, line, i);
+        //putting data into foodTypes
+        foodTypes[i] = (char*)malloc(MAX_FOOD_TYPE_NAME * sizeof(char));
+        //putting data into specificFoods and prices
+        specificFoods[i] = (char**)malloc(noOfSpecificFoods[i] * sizeof(char*));
+        prices[i] = (double*)malloc(noOfSpecificFoods[i] * sizeof(double));
+        delimitingLineFood(line, foodTypes, i, specificFoods, prices, charPrice);
+    }
+    //drinks
+    noOfDrinks = getNumberOf(charNumber, line, data);
+    char ** drinks = (char**)malloc(noOfDrinks * sizeof(char*));
+    double * pricesDrinks = (double*)malloc(noOfDrinks * sizeof(double));
+    fgets(line, MAX_LINE, data);
+    delimitingLineDrinks(line, drinks, charPrice, pricesDrinks);
+
+    printf("Welcome to Food Thingies! \n");
     while (!orderConfirmed) {
         switch (state) {
             case 0: {
@@ -41,13 +60,13 @@ int main() {
                 break;
             }
             case 2: {
-                displaySpecificFoodOptions(noOfDishes[foodTypeChoice], foodTypes[foodTypeChoice], food[foodTypeChoice], prices[foodTypeChoice]);
-                specificFoodChoice = getChoiceIndex(noOfDishes[foodTypeChoice], &state);
+                displaySpecificFoodOptions(noOfSpecificFoods[foodTypeChoice], foodTypes[foodTypeChoice], specificFoods[foodTypeChoice], prices[foodTypeChoice]);
+                specificFoodChoice = getChoiceIndex(noOfSpecificFoods[foodTypeChoice], &state);
                 break;
             }
             case 3: {
-                displayDrinksOptions(noOfDrinks, foodTypes[foodTypeChoice], drinks, drinksPrices);
-                drinkChoice = getChoiceIndex(noOfDrinks, &state);
+                displayDrinksOptions(noOfDrinks, foodTypes[foodTypeChoice], drinks, pricesDrinks);
+                drinkChoice = getChoiceIndex(noOfDrinks+1, &state);
                 break;
             }
             case 4: {
@@ -61,17 +80,13 @@ int main() {
             }
             case 6: {
                 displayAccountData(username);
-                displayCustomerOrder(food[foodTypeChoice][specificFoodChoice], prices[foodTypeChoice][specificFoodChoice], drinks[drinkChoice], drinksPrices[drinkChoice], cutleryAnswer[cutleryChoice], additionalInfo);
+                displayCustomerOrder(specificFoods[foodTypeChoice][specificFoodChoice], prices[foodTypeChoice][specificFoodChoice], drinks[drinkChoice], pricesDrinks[drinkChoice], cutleryAnswer[cutleryChoice], additionalInfo, drinkChoice);
                 orderConfirmed = getFinalOrderChoiceIndex(&state, username);
                 break;
             }
         }
     }
+    freeFoodMemory(noOfFoodTypes, foodTypes, noOfSpecificFoods, specificFoods, prices);
+    freeDrinkMemory(noOfDrinks, drinks, pricesDrinks);
     return 0;
-}
-
-void getAdditionalInfo(char additionalInfo[], int *state) {
-    printf("Any additional info? \n");
-    gets(additionalInfo);
-    (*state)++;
 }
