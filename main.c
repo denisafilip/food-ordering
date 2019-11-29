@@ -88,5 +88,6 @@ int main() {
     }
     freeFoodMemory(noOfFoodTypes, foodTypes, noOfSpecificFoods, specificFoods, prices);
     freeDrinkMemory(noOfDrinks, drinks, pricesDrinks);
+    fclose(data);
     return 0;
 }
