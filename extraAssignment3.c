@@ -34,7 +34,7 @@ void rememberUsers(char line[], FILE* signInUp, userFromFile * users, int * noOf
 void addUser(userFromFile * users, int *noOfUsers, char username[MAX_USERNAME], char password[MAX_PASSWORD], FILE* signInUp, int *signedIn) {
     strcpy(users[*noOfUsers].username, username);
     strcpy(users[*noOfUsers].password, password);
-    fprintf(signInUp, "%s %s \n", username, password);
+    fprintf(signInUp, "\n%s %s", username, password);
     (*noOfUsers)++;
     *signedIn = 1;
 }
