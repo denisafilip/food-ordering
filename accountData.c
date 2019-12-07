@@ -4,19 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_SPECIFIC_FOOD_NAME 20
-#define MAX_DRINK_NAME 30
-#define MAX_CUTLERY_NAME 30
-
-
-void inputAccountData(char username[], char password[]) {
-    printf("Please sign in to continue: \n");
-    printf("username \n");
-    gets(username);
-    printf("password \n");
-    gets(password);
-}
-
 void displayAccountData(char username[]) {
     printf("This is your order: \n \n");
     printf("Name: %s \n", username);

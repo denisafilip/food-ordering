@@ -5,24 +5,26 @@
 #include "choice.h"
 #include "accountData.h"
 #include "freeMemory.h"
+#include "extraAssignment3.h"
 
-#define LOAD_DATA "Please load the data:"
+#define MAX_FOOD_TYPE_NAME 30
 
 int main() {
+
     FILE *data = fopen("data.txt", "r");
     if(data == NULL){
         printf(LOAD_DATA "\n");
         data = stdin;
     }
-    char username[20], password[20];
+    char username[MAX_USERNAME], password[MAX_PASSWORD];
     int noOfFoodTypes, foodTypeChoice, specificFoodChoice, drinkChoice, noOfDrinks;
     int cutlery = 2, cutleryChoice;
     int state = 0;
     int orderConfirmed = 0;
     char cutleryAnswer[][MAX_CUTLERY_NAME] = {"Yes!", "No, thanks!"}, additionalInfo[MAX_ADDITIONAL_INFO];
-    char line[MAX_LINE];
-    char charPrice[MAX_LINE];
-    char *charNumber;
+    char * line = (char*)malloc(MAX_LINE * sizeof(char));
+    char * charPrice = (char*)malloc(MAX_LINE * sizeof(char));
+    char *charNumber = "";
     //foods
     noOfFoodTypes = getNumberOf(charNumber, line, data);
     int * noOfSpecificFoods = (int*)malloc(noOfFoodTypes * sizeof(int));
@@ -47,11 +49,11 @@ int main() {
     delimitingLineDrinks(line, drinks, charPrice, pricesDrinks);
 
     printf("Welcome to Food Thingies! \n");
+    //extra assignment 3
     while (!orderConfirmed) {
         switch (state) {
             case 0: {
-                inputAccountData(username, password);
-                state++;
+                loginProcess(username, password, &state);
                 break;
             }
             case 1: {

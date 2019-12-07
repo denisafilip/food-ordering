@@ -7,8 +7,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "loadData.h"
+#include "extraAssignment3.h"
 
-int countSpecificFoods(int * noOfSpecificFoods, char line[], int index) {
+//change
+int countSpecificFoods(int * noOfSpecificFoods, char * line, int index) {
     noOfSpecificFoods[index]=0;
     for (int j=0; j<strlen(line); j++) {
         if (line[j] == '(') noOfSpecificFoods[index]++; //count the noOfSpecificFoods for each foodType
@@ -16,7 +18,7 @@ int countSpecificFoods(int * noOfSpecificFoods, char line[], int index) {
     return noOfSpecificFoods[index];
 }
 
-void substractCharPrice(const char *delimiter, int index, char charPrice[]) {
+void constructCharPrice(char *delimiter, int index, char * charPrice) {
     for (int i=0; i<255; i++) {
         charPrice[i]='\0';
     }
@@ -31,24 +33,18 @@ void substractCharPrice(const char *delimiter, int index, char charPrice[]) {
     charPrice[m+1] = '\0';
 }
 
-void substractSpecificFood(const char *delimiter, char *** specificFoods, int indexColumn, int indexRow, int index) {
-    while (delimiter[index] != '-') {
-        specificFoods[indexRow][indexColumn][index] = delimiter[index];
-        index++;
-    }
-    specificFoods[indexRow][indexColumn][index-1] = '\0';
-}
-
-void substractSpecificDrink(const char *delimiter, char ** drinks, int indexRow, int index) {
+char * constructSpecificProduct(char *delimiter, int index) {
+    char * nameOfProduct = (char*)malloc(MAX_LINE * sizeof(char));
     while (delimiter[index] != '-' || delimiter[index+1] != ' ') {
-        drinks[indexRow][index] = delimiter[index];
+        nameOfProduct[index] = delimiter[index];
         index++;
     }
-    drinks[indexRow][index-1] = '\0';
+    nameOfProduct[index-1] = '\0';
+    return nameOfProduct;
 }
 
 void cutName(int index, char ** foodTypes) {
-    char *correctName = strchr(foodTypes[index], ':');
+    char *correctName = strchr(foodTypes[index], ' ');
     foodTypes[index][correctName-foodTypes[index]] = '\0';
 }
 
@@ -59,11 +55,11 @@ void delimitingLineFood(char * line, char ** foodTypes, int index, char *** spec
     int k=0;
     foodNameDelim = strtok(NULL, "()");
     while (foodNameDelim != NULL) {
-        if (strcmp(foodNameDelim, " ") != 0 && strcmp(foodNameDelim, "\n") != 0){
+        if (strcmp(foodNameDelim, " ") != 0 && strcmp(foodNameDelim, "\n") != 0 && strcmp(foodNameDelim, ", ") != 0) {
             specificFoods[index][k] = (char*)malloc(MAX_SPECIFIC_FOOD_NAME * sizeof(char));
             int j = 0;
-            substractSpecificFood(foodNameDelim, specificFoods, k, index, j);
-            substractCharPrice(foodNameDelim, j, charPrice);
+            specificFoods[index][k] = constructSpecificProduct(foodNameDelim, j);
+            constructCharPrice(foodNameDelim, j, charPrice);
             prices[index][k] = atof(charPrice)/100;
             k++;
         }
@@ -75,11 +71,11 @@ void delimitingLineDrinks(char * line, char ** drinks, char * charPrice, double 
     int i=0;
     char *drinkNameDelim = strtok(line, "()");
     while (drinkNameDelim != NULL) {
-        if (strcmp(drinkNameDelim, "\n") != 0 && strcmp(drinkNameDelim, ", ") != 0) {
+        if (strcmp(drinkNameDelim, "\n") != 0 && strcmp(drinkNameDelim, ", ") != 0 && strcmp(drinkNameDelim, " ") != 0) {
             drinks[i] = (char*)malloc(MAX_DRINK_NAME * sizeof(char));
             int j = 0;
-            substractSpecificDrink(drinkNameDelim, drinks, i, j);
-            substractCharPrice(drinkNameDelim, j, charPrice);
+            drinks[i] = constructSpecificProduct(drinkNameDelim, j);
+            constructCharPrice(drinkNameDelim, j, charPrice);
             pricesDrinks[i] = atof(charPrice);
             i++;
         }
@@ -87,9 +83,8 @@ void delimitingLineDrinks(char * line, char ** drinks, char * charPrice, double 
     }
 }
 
-
 int getNumberOf(char * charNumber, char * line, FILE *data) {
     fgets(line, MAX_LINE, data);
-    charNumber = strtok(line,":");
+    charNumber = strtok(line, ":");
     return atoi(charNumber);
 }

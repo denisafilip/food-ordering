@@ -7,6 +7,5 @@
 
 #endif //FOOD_ORDERING_ACCOUNTDATA_H
 
-void inputAccountData (char username[], char password[]);
 void displayAccountData(char username[]);
 void displayCustomerOrder(char * specificFoods, double prices, char * drinks, double drinksPrices, char cutleryAnswer[], char additionalInfo[], int drinkChoice);
