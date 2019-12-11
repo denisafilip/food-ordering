@@ -6,6 +6,7 @@
 #include "accountData.h"
 #include "freeMemory.h"
 #include "extraAssignment3.h"
+#include "encryption.h"
 
 #define MAX_FOOD_TYPE_NAME 30
 

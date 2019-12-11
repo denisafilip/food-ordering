@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include "extraAssignment3.h"
 #include "accountData.h"
+#include "encryption.h"
 
 void inputAccountData(char username[MAX_USERNAME], char password[MAX_PASSWORD]) {
     printf("username \n");
@@ -17,10 +18,13 @@ void inputAccountData(char username[MAX_USERNAME], char password[MAX_PASSWORD]) 
 }
 
 void rememberUsers(char line[], FILE* signInUp, userFromFile * users, int * noOfUsers) {
+   fgets(line, MAX_LINE, signInUp);
+   fgets(line, MAX_LINE, signInUp);
     while(fgets(line, MAX_LINE, signInUp)) {
         char *delim = strtok(line, " ");
         strcpy(users[*noOfUsers].username, delim);
         delim = strtok(NULL, "\n");
+        decryptingPassword(delim, 3);
         strcpy(users[*noOfUsers].password, delim);
         int i=0;
         while (delim[i] != '\n' && delim[i] != '\0') {
@@ -34,14 +38,22 @@ void rememberUsers(char line[], FILE* signInUp, userFromFile * users, int * noOf
 void addUser(userFromFile * users, int *noOfUsers, char username[MAX_USERNAME], char password[MAX_PASSWORD], FILE* signInUp, int *signedIn) {
     strcpy(users[*noOfUsers].username, username);
     strcpy(users[*noOfUsers].password, password);
-    fprintf(signInUp, "\n%s %s", username, password);
+    encryptPassword(password, 3);
     (*noOfUsers)++;
+
+    fopen("signInUp", "r+");
+    fseek(signInUp, 88, SEEK_SET);
+    fprintf(signInUp, "%d", *noOfUsers);
+    fclose(signInUp);
+
+    fopen("signInUp", "a+");
+    fprintf(signInUp, "\n%s %s", username, password);
     *signedIn = 1;
 }
 
 void checkUsername(userFromFile * users, char username[MAX_USERNAME], int *signChoice, int noOfUsers) {
     for (int i=0; i<noOfUsers; i++) {
-        if (strcmp(users[i].username, username)== 0) {
+        if (strcmp(users[i].username, username) == 0) {
             printf(DUPLICATE_USER "\n");
             gets(username);
             *signChoice = 1;
@@ -70,10 +82,10 @@ void inputFromUser(int signChoice, int *signState, char * username, char * passw
 }
 
 void validatePassword(char password[MAX_PASSWORD], char username[MAX_USERNAME], bool *isOk) {
-        validateLengthPassword(password, isOk);
-        validateDigitsPassword(password, isOk);
-        validateSpecialCharsPassword(password, isOk);
-        validateNotUsernamePassword(password, username, isOk);
+    validateLengthPassword(password, isOk);
+    validateDigitsPassword(password, isOk);
+    validateSpecialCharsPassword(password, isOk);
+    validateNotUsernamePassword(password, username, isOk);
 }
 
 void validateLengthPassword(char password[MAX_PASSWORD], bool *isOk) {
@@ -170,7 +182,7 @@ void loginProcess(char username[MAX_USERNAME], char password[MAX_PASSWORD], int 
     int noOfUsers = 0;
     char * line = (char*)malloc(MAX_LINE * sizeof(char));
     userFromFile * users = (userFromFile*)malloc(MAX_USERS * sizeof(userFromFile));
-    FILE *signInUp = fopen("signInUp", "a+");
+    FILE *signInUp = fopen("signInUp", "r+");
     if (signInUp == NULL) {
         printf("Sorry, the file you were looking for does not exist \n");
     }
