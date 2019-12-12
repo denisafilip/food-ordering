@@ -32,6 +32,7 @@ typedef struct {
 } userFromFile;
 
 void inputAccountData(char username[MAX_USERNAME], char password[MAX_PASSWORD]);
+void writeInFile(FILE* signInUp, int noOfUsers);
 void rememberUsers(char line[MAX_LINE], FILE* signInUp, userFromFile * users, int * noOfUsers);
 void chooseSignInUp(int *signState, int *signChoice);
 void inputFromUser(int signChoice, int *signState, char * username, char * password);

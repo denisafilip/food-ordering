@@ -35,17 +35,22 @@ void rememberUsers(char line[], FILE* signInUp, userFromFile * users, int * noOf
     }
 }
 
+void writeInFile(FILE* signInUp, int noOfUsers) {
+    char * key = "Julius Caesar Cipher: the letters and numbers are shifted to the right by the shiftKey";
+    fopen("signInUp", "r+");
+    fseek(signInUp, 0, SEEK_SET);
+    fprintf(signInUp, "%s\n", key);
+    fseek(signInUp, 88, SEEK_SET);
+    fprintf(signInUp, "%d", noOfUsers);
+    fclose(signInUp);
+}
+
 void addUser(userFromFile * users, int *noOfUsers, char username[MAX_USERNAME], char password[MAX_PASSWORD], FILE* signInUp, int *signedIn) {
     strcpy(users[*noOfUsers].username, username);
     strcpy(users[*noOfUsers].password, password);
     encryptPassword(password, 3);
     (*noOfUsers)++;
-
-    fopen("signInUp", "r+");
-    fseek(signInUp, 88, SEEK_SET);
-    fprintf(signInUp, "%d", *noOfUsers);
-    fclose(signInUp);
-
+    writeInFile(signInUp, *noOfUsers);
     fopen("signInUp", "a+");
     fprintf(signInUp, "\n%s %s", username, password);
     *signedIn = 1;
