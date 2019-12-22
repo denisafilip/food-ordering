@@ -12,9 +12,9 @@
 
 
 int countSpecificFoods(int * noOfSpecificFoods, char * line, int index);
-char * constructSpecificProduct(char *delimiter, int index);
+char * constructSpecificProductX(char *delimiter, int index);
 void constructCharPrice(char *delimiter, int index, char *charPrice);
 void cutName(int index, char ** foodTypes);
 void delimitingLineFood(char * line, char ** foodTypes, int index, char *** specificFoods, double ** prices, char * charPrice);
-void delimitingLineDrinks(char * line, char ** drinks, char * charPrice, double * pricesDrinks);
+//void delimitingLineDrinks(char * line, char ** drinks, char * charPrice, double * pricesDrinks);
 int getNumberOf(char * charNumber, char * line, FILE *data);

@@ -10,4 +10,3 @@
 #endif //FOOD_ORDERING_FREEMEMORY_H
 
 void freeFoodMemory(int noOfFoodTypes, char ** foodTypes, int * noOfSpecificFoods, char *** specificFoods, double ** prices, user u);
-void freeDrinkMemory(int noOfDrinks, char ** drinks, double * pricesDrinks);
