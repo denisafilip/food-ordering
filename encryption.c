@@ -3,7 +3,6 @@
 //
 #include <string.h>
 #include <ctype.h>
-#include <stdio.h>
 
 //Iulius Caesar Cipher
 void encryptPassword(char message[], int shiftKey) {

@@ -17,7 +17,7 @@ int main() {
         printf(LOAD_DATA "\n");
         data = stdin;
     }
-    char username[MAX_USERNAME], password[MAX_PASSWORD];
+    char username[MAX_USERNAME];
     int noOfFoodTypes, foodTypeChoice, specificFoodChoice, drinkChoice, noOfDrinks;
     int cutlery = 2, cutleryChoice;
     int state = 0;
@@ -26,6 +26,10 @@ int main() {
     char * line = (char*)malloc(MAX_LINE * sizeof(char));
     char * charPrice = (char*)malloc(MAX_LINE * sizeof(char));
     char *charNumber = "";
+    user u = createUser();
+    enum state {
+        LOGIN_PROCESS, CHOOSE_FOOD_TYPE, CHOOSE_SPECIFIC_FOOD, CHOOSE_DRINKS, CHOOSE_CUTLERY, INPUT_ADDITIONAL_INFO, CONFIRM_ORDER
+    };
     //foods
     noOfFoodTypes = getNumberOf(charNumber, line, data);
     int * noOfSpecificFoods = (int*)malloc(noOfFoodTypes * sizeof(int));
@@ -53,43 +57,43 @@ int main() {
     //extra assignment 3
     while (!orderConfirmed) {
         switch (state) {
-            case 0: {
-                loginProcess(username, password, &state);
+            case LOGIN_PROCESS: {
+                loginProcess(u, &state);
                 break;
             }
-            case 1: {
+            case CHOOSE_FOOD_TYPE: {
                 displayFoodOptions(noOfFoodTypes, foodTypes);
                 foodTypeChoice = getChoiceIndex(noOfFoodTypes, &state);
                 break;
             }
-            case 2: {
+            case CHOOSE_SPECIFIC_FOOD: {
                 displaySpecificFoodOptions(noOfSpecificFoods[foodTypeChoice], foodTypes[foodTypeChoice], specificFoods[foodTypeChoice], prices[foodTypeChoice]);
                 specificFoodChoice = getChoiceIndex(noOfSpecificFoods[foodTypeChoice], &state);
                 break;
             }
-            case 3: {
+            case CHOOSE_DRINKS: {
                 displayDrinksOptions(noOfDrinks, foodTypes[foodTypeChoice], drinks, pricesDrinks);
                 drinkChoice = getChoiceIndex(noOfDrinks+1, &state);
                 break;
             }
-            case 4: {
+            case CHOOSE_CUTLERY: {
                 displayCutleryOptions(cutlery, cutleryAnswer);
                 cutleryChoice = getChoiceIndex(cutlery, &state);
                 break;
             }
-            case 5: {
+            case INPUT_ADDITIONAL_INFO: {
                 getAdditionalInfo(additionalInfo, &state);
                 break;
             }
-            case 6: {
+            case CONFIRM_ORDER: {
                 displayAccountData(username);
                 displayCustomerOrder(specificFoods[foodTypeChoice][specificFoodChoice], prices[foodTypeChoice][specificFoodChoice], drinks[drinkChoice], pricesDrinks[drinkChoice], cutleryAnswer[cutleryChoice], additionalInfo, drinkChoice);
-                orderConfirmed = getFinalOrderChoiceIndex(&state, username);
+                orderConfirmed = getFinalOrderChoiceIndex(&state, u);
                 break;
             }
         }
     }
-    freeFoodMemory(noOfFoodTypes, foodTypes, noOfSpecificFoods, specificFoods, prices);
+    freeFoodMemory(noOfFoodTypes, foodTypes, noOfSpecificFoods, specificFoods, prices, u);
     freeDrinkMemory(noOfDrinks, drinks, pricesDrinks);
     fclose(data);
     return 0;
