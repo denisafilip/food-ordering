@@ -10,7 +10,7 @@ void displayAccountData(char username[]) {
     printf("Name: %s \n", username);
 }
 
-void displayCustomerOrder(char * specificFoods, double prices, drinks * d, cutlery c, char additionalInfo[], int drinkChoice) {
+void displayCustomerOrder(char * specificFoods, double prices, drinks * d, int cutleryChoice, cutlery * c, char additionalInfo[], int drinkChoice) {
     printf("Food items: \n");
     printf("--- %s: %.2lf \n", specificFoods, prices);
     if (drinkChoice + 'a' == 'e') {
@@ -18,7 +18,7 @@ void displayCustomerOrder(char * specificFoods, double prices, drinks * d, cutle
     } else {
         printf("--- Drinks: %s: %.2lf \n", d->name, d->price);
     }
-    printf("Cutlery: %s \n", *(c.cutleryAnswer));
+    printf("Cutlery: %s \n", c->cutleryAnswer[cutleryChoice]);
     if (strcmp(additionalInfo, "")!=0)
         printf("Additional info: %s \n", additionalInfo);
     if (drinkChoice + 'a' == 'e') {

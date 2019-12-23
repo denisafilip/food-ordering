@@ -152,23 +152,26 @@ void signIn(userFromFile * users, int noOfUsers, user u, int *signState, int *si
 void signUpFunctionality(user * u, userFromFile * users, int *noOfUsers, FILE* signInUp, int *state) {
     int signChoice = 0, signState = 0;
     int signedIn = 0;
+    enum signState {
+        CHOOSE_SIGNING_ACTION, INPUT_FROM_USER, SIGN_IN_PROCESS, SIGN_UP_PROCESS
+    };
     while (!signedIn) {
         switch(signState) {
-            case 0: {
+            case CHOOSE_SIGNING_ACTION: {
                 chooseSignInUp(&signState, &signChoice);
                 break;
             }
-            case 1: {
+            case INPUT_FROM_USER: {
                 inputFromUser(signChoice, &signState, *u);
                 break;
             }
                 // Sign In
-            case 2: {
+            case SIGN_IN_PROCESS: {
                 signIn(users, *noOfUsers, *u, &signState, &signedIn, *(&state));
                 break;
             }
                 //Sign Up
-            case 3: {
+            case SIGN_UP_PROCESS: {
                 bool isOk = true;
                 checkUsername(users, u, &signChoice, *noOfUsers);
                 validatePassword(u, &isOk);

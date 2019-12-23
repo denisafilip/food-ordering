@@ -12,6 +12,5 @@ typedef struct _drinks {
 
 void displayDrinksOptions(int noOfDrinks, char * foodTypes, drinks * d);
 void delimitingLineDrinks(char * line, char * charPrice, drinks * d);
-//void displayCustomerOrder(char * specificFoods, double prices, drinks * d, char cutleryAnswer[], char additionalInfo[], int drinkChoice);
 void freeDrinkMemory(int noOfDrinks, drinks * d);
 #endif //FOOD_ORDERING_DRINKS_H

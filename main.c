@@ -87,7 +87,7 @@ int main() {
             }
             case CONFIRM_ORDER: {
                 displayAccountData(username);
-                displayCustomerOrder(specificFoods[foodTypeChoice][specificFoodChoice], prices[foodTypeChoice][specificFoodChoice], &drink[drinkChoice], c, additionalInfo, drinkChoice);
+                displayCustomerOrder(specificFoods[foodTypeChoice][specificFoodChoice], prices[foodTypeChoice][specificFoodChoice], &drink[drinkChoice], cutleryChoice, &c, additionalInfo, drinkChoice);
                 orderConfirmed = getFinalOrderChoiceIndex(&state, u);
                 break;
             }
