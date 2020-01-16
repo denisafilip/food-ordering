@@ -17,15 +17,20 @@ int main() {
         printf(LOAD_DATA "\n");
         data = stdin;
     }
-    char username[MAX_USERNAME], password[MAX_PASSWORD];
+    char username[MAX_USERNAME];
     int noOfFoodTypes, foodTypeChoice, specificFoodChoice, drinkChoice, noOfDrinks;
-    int cutlery = 2, cutleryChoice;
+    int cutleryValue = 2, cutleryChoice;
     int state = 0;
     int orderConfirmed = 0;
-    char cutleryAnswer[][MAX_CUTLERY_NAME] = {"Yes!", "No, thanks!"}, additionalInfo[MAX_ADDITIONAL_INFO];
+    char additionalInfo[MAX_ADDITIONAL_INFO];
     char * line = (char*)malloc(MAX_LINE * sizeof(char));
     char * charPrice = (char*)malloc(MAX_LINE * sizeof(char));
     char *charNumber = "";
+    user u = createUser();
+    cutlery c = createCutlery();
+    enum state {
+        LOGIN_PROCESS, CHOOSE_FOOD_TYPE, CHOOSE_SPECIFIC_FOOD, CHOOSE_DRINKS, CHOOSE_CUTLERY, INPUT_ADDITIONAL_INFO, CONFIRM_ORDER
+    };
     //foods
     noOfFoodTypes = getNumberOf(charNumber, line, data);
     int * noOfSpecificFoods = (int*)malloc(noOfFoodTypes * sizeof(int));
@@ -44,53 +49,53 @@ int main() {
     }
     //drinks
     noOfDrinks = getNumberOf(charNumber, line, data);
-    char ** drinks = (char**)malloc(noOfDrinks * sizeof(char*));
-    double * pricesDrinks = (double*)malloc(noOfDrinks * sizeof(double));
+    drinks * drink = (drinks*)malloc(noOfDrinks * sizeof(drinks));
     fgets(line, MAX_LINE, data);
-    delimitingLineDrinks(line, drinks, charPrice, pricesDrinks);
+    delimitingLineDrinks(line, charPrice, drink);
 
     printf("Welcome to Food Thingies! \n");
     //extra assignment 3
     while (!orderConfirmed) {
         switch (state) {
-            case 0: {
-                loginProcess(username, password, &state);
+            case LOGIN_PROCESS: {
+                loginProcess(u, &state);
                 break;
             }
-            case 1: {
+            case CHOOSE_FOOD_TYPE: {
                 displayFoodOptions(noOfFoodTypes, foodTypes);
                 foodTypeChoice = getChoiceIndex(noOfFoodTypes, &state);
                 break;
             }
-            case 2: {
+            case CHOOSE_SPECIFIC_FOOD: {
                 displaySpecificFoodOptions(noOfSpecificFoods[foodTypeChoice], foodTypes[foodTypeChoice], specificFoods[foodTypeChoice], prices[foodTypeChoice]);
                 specificFoodChoice = getChoiceIndex(noOfSpecificFoods[foodTypeChoice], &state);
                 break;
             }
-            case 3: {
-                displayDrinksOptions(noOfDrinks, foodTypes[foodTypeChoice], drinks, pricesDrinks);
+            case CHOOSE_DRINKS: {
+                displayDrinksOptions(noOfDrinks, foodTypes[foodTypeChoice], drink);
                 drinkChoice = getChoiceIndex(noOfDrinks+1, &state);
                 break;
             }
-            case 4: {
-                displayCutleryOptions(cutlery, cutleryAnswer);
-                cutleryChoice = getChoiceIndex(cutlery, &state);
+            case CHOOSE_CUTLERY: {
+                displayCutleryOptions(cutleryValue, c);
+                cutleryChoice = getChoiceIndex(cutleryValue, &state);
                 break;
             }
-            case 5: {
+            case INPUT_ADDITIONAL_INFO: {
                 getAdditionalInfo(additionalInfo, &state);
                 break;
             }
-            case 6: {
+            case CONFIRM_ORDER: {
                 displayAccountData(username);
-                displayCustomerOrder(specificFoods[foodTypeChoice][specificFoodChoice], prices[foodTypeChoice][specificFoodChoice], drinks[drinkChoice], pricesDrinks[drinkChoice], cutleryAnswer[cutleryChoice], additionalInfo, drinkChoice);
-                orderConfirmed = getFinalOrderChoiceIndex(&state, username);
+                displayCustomerOrder(specificFoods[foodTypeChoice][specificFoodChoice], prices[foodTypeChoice][specificFoodChoice], &drink[drinkChoice], cutleryChoice, &c, additionalInfo, drinkChoice);
+                orderConfirmed = getFinalOrderChoiceIndex(&state, u);
                 break;
             }
         }
     }
-    freeFoodMemory(noOfFoodTypes, foodTypes, noOfSpecificFoods, specificFoods, prices);
-    freeDrinkMemory(noOfDrinks, drinks, pricesDrinks);
+    freeFoodMemory(noOfFoodTypes, foodTypes, noOfSpecificFoods, specificFoods, prices, u);
+    freeDrinkMemory(noOfDrinks, drink);
+    freeCutlery(&c);
     fclose(data);
     return 0;
 }

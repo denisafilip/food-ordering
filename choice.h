@@ -13,4 +13,3 @@
  * @return
  */
 int getChoiceIndex(int noOfChoices, int *state);
-int getFinalOrderChoiceIndex(int *state, char username[]);

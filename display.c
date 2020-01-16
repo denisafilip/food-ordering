@@ -22,25 +22,6 @@ void displaySpecificFoodOptions(int noOfSpecificFoods, char * foodTypes, char **
     printf("%c) Go Back \n", 'a' + noOfSpecificFoods);
 }
 
-void displayDrinksOptions(int noOfDrinks, char * foodTypes, char ** drinks, double * pricesDrinks) {
-    printf("Please choose a drink to go with your %s \n", foodTypes);
-    for (int i=0; i<noOfDrinks; i++) {
-        putchar('a' + i);
-        printf(") %s: %.2lf \n", drinks[i], pricesDrinks[i]);
-    }
-    printf("%c) %s \n", 'a' + noOfDrinks, "No, thanks!");
-    printf("%c) Go Back \n", 'a' + noOfDrinks + 1);
-}
-
-void displayCutleryOptions(int cutlery, char cutleryAnswer[][MAX_CUTLERY_NAME]) {
-    printf("Do you want cutlery? \n");
-    for (int i=0; i < cutlery; i++) {
-        putchar('a' + i);
-        printf(") %s \n", cutleryAnswer[i]);
-    }
-    printf("%c) Go Back \n", 'a' + cutlery);
-}
-
 void getAdditionalInfo(char additionalInfo[], int *state) {
     printf("Any additional info? \n");
     gets(additionalInfo);

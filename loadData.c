@@ -33,7 +33,7 @@ void constructCharPrice(char *delimiter, int index, char * charPrice) {
     charPrice[m+1] = '\0';
 }
 
-char * constructSpecificProduct(char *delimiter, int index) {
+char * constructSpecificProductX(char *delimiter, int index) {
     char * nameOfProduct = (char*)malloc(MAX_LINE * sizeof(char));
     while (delimiter[index] != '-' || delimiter[index+1] != ' ') {
         nameOfProduct[index] = delimiter[index];
@@ -58,28 +58,12 @@ void delimitingLineFood(char * line, char ** foodTypes, int index, char *** spec
         if (strcmp(foodNameDelim, " ") != 0 && strcmp(foodNameDelim, "\n") != 0 && strcmp(foodNameDelim, ", ") != 0) {
             specificFoods[index][k] = (char*)malloc(MAX_SPECIFIC_FOOD_NAME * sizeof(char));
             int j = 0;
-            specificFoods[index][k] = constructSpecificProduct(foodNameDelim, j);
+            specificFoods[index][k] = constructSpecificProductX(foodNameDelim, j);
             constructCharPrice(foodNameDelim, j, charPrice);
             prices[index][k] = atof(charPrice)/100;
             k++;
         }
         foodNameDelim = strtok(NULL, "()");
-    }
-}
-
-void delimitingLineDrinks(char * line, char ** drinks, char * charPrice, double * pricesDrinks) {
-    int i=0;
-    char *drinkNameDelim = strtok(line, "()");
-    while (drinkNameDelim != NULL) {
-        if (strcmp(drinkNameDelim, "\n") != 0 && strcmp(drinkNameDelim, ", ") != 0 && strcmp(drinkNameDelim, " ") != 0) {
-            drinks[i] = (char*)malloc(MAX_DRINK_NAME * sizeof(char));
-            int j = 0;
-            drinks[i] = constructSpecificProduct(drinkNameDelim, j);
-            constructCharPrice(drinkNameDelim, j, charPrice);
-            pricesDrinks[i] = atof(charPrice);
-            i++;
-        }
-        drinkNameDelim = strtok(NULL, "()");
     }
 }
 
